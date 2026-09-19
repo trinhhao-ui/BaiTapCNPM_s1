@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header('Quản Lý Tin Tuyển Dụng')}"></head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+    <main class="main-content py-4">
+        <div class="container">
+            <div class="card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1">
+                            <i class="bi bi-briefcase-fill text-primary me-2"></i>Tin Tuyển Dụng Đã Đăng
+                        </h4>
+                        <p class="text-muted small mb-0">Quản lý các vị trí việc làm và theo dõi lượng ứng viên nộp hồ sơ</p>
+                    </div>
+                    <a th:href="@{/recruiter/jobs/new}" class="btn btn-primary rounded-pill">
+                        <i class="bi bi-plus-circle me-1"></i>Đăng Tin Mới
+                    </a>
+                </div>
+
+                <div th:if="${jobs.empty}" class="text-center py-5">
+                    <i class="bi bi-file-earmark-plus display-4 text-muted mb-3 d-block"></i>
+                    <h5>Bạn chưa đăng tin tuyển dụng nào!</h5>
+                    <p class="text-muted">Bắt đầu tiếp cận các ứng viên tiềm năng bằng cách đăng tin ngay hôm nay.</p>
+                    <a th:href="@{/recruiter/jobs/new}" class="btn btn-primary rounded-pill px-4 mt-2">Đăng Tin Tuyển Dụng</a>
+                </div>
+
+                <div th:if="${!jobs.empty}" class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Tiêu Đề Công Việc</th>
+                                <th>Địa Điểm</th>
+                                <th>Mức Lương</th>
+                                <th>Trạng Thái</th>
+                                <th>Ngày Đăng</th>
+                                <th class="text-end">Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="job, iter : ${jobs}">
+                                <td th:text="${iter.count}">1</td>
+                                <td>
+                                    <a th:href="@{'/jobs/' + ${job.id}}" class="fw-bold text-decoration-none text-dark" th:text="${job.title}">Senior Java Dev</a>
+                                    <div class="small text-muted" th:text="${job.companyName}">FPT Software</div>
+                                </td>
+                                <td th:text="${job.location}">Hà Nội</td>
+                                <td th:text="${job.salaryRange}">25-40 triệu</td>
+                                <td>
+                                    <span th:if="${job.status.name() == 'APPROVED'}" class="badge bg-success">Đã duyệt</span>
+                                    <span th:if="${job.status.name() == 'PENDING_APPROVAL'}" class="badge bg-warning text-dark">Chờ duyệt</span>
+                                    <span th:if="${job.status.name() == 'REJECTED'}" class="badge bg-danger">Bị từ chối</span>
+                                    <span th:if="${job.status.name() == 'CLOSED'}" class="badge bg-secondary">Đã đóng</span>
+                                </td>
+                                <td><small class="text-muted" th:text="${#temporals.format(job.createdAt, 'dd/MM/yyyy')}">19/09/2026</small></td>
+                                <td class="text-end">
+                                    <a th:href="@{'/recruiter/jobs/' + ${job.id} + '/applications'}" class="btn btn-sm btn-outline-info me-1" title="Xem ứng viên">
+                                        <i class="bi bi-people-fill me-1"></i>Ứng viên
+                                    </a>
+                                    <a th:href="@{'/recruiter/jobs/' + ${job.id} + '/edit'}" class="btn btn-sm btn-outline-secondary me-1" title="Chỉnh sửa tin">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form th:action="@{'/recruiter/jobs/' + ${job.id} + '/delete'}" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tin tuyển dụng này?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa tin">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header('Cơ Hội Việc Làm IT Hàng Đầu')}"></head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <div class="bg-primary text-white py-5 mb-4 shadow-sm" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+            <div class="container text-center py-4">
+                <h1 class="display-5 fw-bold mb-3">Tìm Kiếm Việc Làm Mơ Ước</h1>
+                <p class="lead mb-4">Hàng trăm cơ hội việc làm hấp dẫn từ các nhà tuyển dụng công nghệ hàng đầu</p>
+
+                <!-- Search Form -->
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <form th:action="@{/jobs}" method="get" class="d-flex bg-white p-2 rounded-pill shadow">
+                            <input type="text" name="keyword" th:value="${keyword}" class="form-control border-0 rounded-pill px-4" placeholder="Nhập vị trí, kỹ năng (Java, React, Tester...) hoặc công ty...">
+                            <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold text-dark">
+                                <i class="bi bi-search me-1"></i>Tìm Việc
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jobs Listing -->
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold text-dark">
+                    <i class="bi bi-fire text-danger me-2"></i>Việc Làm Tuyển Dụng Mới Nhất
+                </h3>
+                <span class="text-muted" th:text="'Tìm thấy ' + ${jobs.size()} + ' công việc phù hợp'"></span>
+            </div>
+
+            <div th:if="${jobs.empty}" class="alert alert-info text-center py-5">
+                <i class="bi bi-info-circle display-4 d-block mb-3 text-primary"></i>
+                <h5>Không tìm thấy vị trí tuyển dụng nào phù hợp với từ khóa!</h5>
+                <p class="text-muted">Hãy thử tìm kiếm với từ khóa khác hoặc quay lại trang chủ.</p>
+                <a th:href="@{/}" class="btn btn-primary mt-2">Xem Tất Cả Việc Làm</a>
+            </div>
+
+            <div class="row g-4">
+                <div th:each="job : ${jobs}" class="col-md-6 col-lg-6">
+                    <div class="card job-card h-100 p-4 border bg-white">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <span class="badge bg-light text-primary border mb-2" th:text="${job.employmentType}">Toàn thời gian</span>
+                                <h5 class="card-title fw-bold text-dark mb-1">
+                                    <a th:href="@{'/jobs/' + ${job.id}}" class="text-decoration-none text-dark" th:text="${job.title}">Tên Công Việc</a>
+                                </h5>
+                                <div class="text-muted fw-semibold">
+                                    <i class="bi bi-building me-1 text-secondary"></i>
+                                    <span th:text="${job.companyName}">Tên Công Ty</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <p class="card-text text-secondary text-truncate-2" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;" th:text="${job.description}">Mô tả ngắn gọn công việc...</p>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-3 text-muted small mb-4">
+                            <div><i class="bi bi-geo-alt-fill text-danger me-1"></i><span th:text="${job.location}">Địa điểm</span></div>
+                            <div><i class="bi bi-cash-stack text-success me-1"></i><span class="fw-bold text-success" th:text="${job.salaryRange}">Mức lương</span></div>
+                        </div>
+
+                        <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="bi bi-clock me-1"></i>
+                                <span th:text="${#temporals.format(job.createdAt, 'dd/MM/yyyy')}">19/09/2026</span>
+                            </small>
+                            <a th:href="@{'/jobs/' + ${job.id}}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                Chi tiết & Ứng tuyển <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

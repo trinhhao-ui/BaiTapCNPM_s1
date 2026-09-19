@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header('Hồ Sơ CV - ' + ${cv.candidate.fullName})}"></head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="main-content py-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="card p-5 shadow-sm border bg-white">
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
+                            <div>
+                                <h2 class="fw-bold text-dark mb-1" th:text="${cv.candidate.fullName}">Nguyễn Văn Nam</h2>
+                                <h5 class="text-primary" th:text="${cv.title}">CV Lập trình viên Java</h5>
+                                <div class="text-muted small mt-2">
+                                    <span class="me-3"><i class="bi bi-envelope me-1"></i><span th:text="${cv.candidate.email}"></span></span>
+                                    <span class="me-3"><i class="bi bi-telephone me-1"></i><span th:text="${cv.candidate.phone}"></span></span>
+                                    <span th:if="${cv.portfolioUrl != null}"><i class="bi bi-link-45deg me-1"></i><a th:href="${cv.portfolioUrl}" target="_blank" th:text="${cv.portfolioUrl}"></a></span>
+                                </div>
+                            </div>
+                            <button onclick="window.print()" class="btn btn-outline-secondary btn-sm d-print-none">
+                                <i class="bi bi-printer me-1"></i>In CV
+                            </button>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="fw-bold text-dark border-bottom pb-2"><i class="bi bi-person-lines-fill text-primary me-2"></i>Tóm tắt bản thân</h5>
+                            <p class="text-secondary" style="white-space: pre-line;" th:text="${cv.summary}"></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="fw-bold text-dark border-bottom pb-2"><i class="bi bi-tools text-primary me-2"></i>Kỹ năng chuyên môn</h5>
+                            <p class="text-secondary" style="white-space: pre-line;" th:text="${cv.skills}"></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="fw-bold text-dark border-bottom pb-2"><i class="bi bi-mortarboard-fill text-primary me-2"></i>Học vấn</h5>
+                            <p class="text-secondary" style="white-space: pre-line;" th:text="${cv.education}"></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="fw-bold text-dark border-bottom pb-2"><i class="bi bi-briefcase-fill text-primary me-2"></i>Kinh nghiệm làm việc & Dự án</h5>
+                            <p class="text-secondary" style="white-space: pre-line;" th:text="${cv.experience}"></p>
+                        </div>
+
+                        <div class="text-end text-muted small border-top pt-3">
+                            Ngày cập nhật gần nhất: <span th:text="${#temporals.format(cv.updatedAt, 'dd/MM/yyyy HH:mm')}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

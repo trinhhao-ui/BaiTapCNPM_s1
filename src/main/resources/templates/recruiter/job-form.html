@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header(${isNew} ? 'Đăng Tin Tuyển Dụng Mới' : 'Chỉnh Sửa Tin Tuyển Dụng')}"></head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+    <main class="main-content py-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="fw-bold text-dark mb-0">
+                                <i class="bi bi-pencil-square text-primary me-2"></i>
+                                <span th:text="${isNew} ? 'Đăng Tin Tuyển Dụng Mới' : 'Chỉnh Sửa Tin Tuyển Dụng'"></span>
+                            </h4>
+                            <a th:href="@{/recruiter/jobs}" class="btn btn-outline-secondary rounded-pill btn-sm">
+                                <i class="bi bi-arrow-left me-1"></i>Quay lại danh sách
+                            </a>
+                        </div>
+
+                        <form th:action="@{/recruiter/jobs/save}" method="post">
+                            <input type="hidden" name="id" th:value="${job.id}">
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-8">
+                                    <label class="form-label fw-bold">Tiêu đề vị trí tuyển dụng <span class="text-danger">*</span></label>
+                                    <input type="text" name="title" class="form-control" th:value="${job.title}" placeholder="Ví dụ: Senior Java Backend Engineer" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Hình thức làm việc <span class="text-danger">*</span></label>
+                                    <select name="employmentType" class="form-select" required>
+                                        <option value="Toàn thời gian" th:selected="${job.employmentType == 'Toàn thời gian'}">Toàn thời gian</option>
+                                        <option value="Bán thời gian" th:selected="${job.employmentType == 'Bán thời gian'}">Bán thời gian</option>
+                                        <option value="Thực tập" th:selected="${job.employmentType == 'Thực tập'}">Thực tập</option>
+                                        <option value="Remote / Từ xa" th:selected="${job.employmentType == 'Remote / Từ xa'}">Remote / Từ xa</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Tên công ty <span class="text-danger">*</span></label>
+                                    <input type="text" name="companyName" class="form-control" th:value="${job.companyName}" placeholder="Ví dụ: FPT Software" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Địa điểm làm việc <span class="text-danger">*</span></label>
+                                    <input type="text" name="location" class="form-control" th:value="${job.location}" placeholder="Ví dụ: Cầu Giấy, Hà Nội" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Mức lương dự kiến <span class="text-danger">*</span></label>
+                                <input type="text" name="salaryRange" class="form-control" th:value="${job.salaryRange}" placeholder="Ví dụ: 20,000,000 - 35,000,000 VNĐ hoặc Thỏa thuận" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Mô tả công việc <span class="text-danger">*</span></label>
+                                <textarea name="description" rows="5" class="form-control" placeholder="Mô tả các nhiệm vụ và trách nhiệm chính..." required th:text="${job.description}"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Yêu cầu ứng viên <span class="text-danger">*</span></label>
+                                <textarea name="requirements" rows="5" class="form-control" placeholder="Kinh nghiệm, kỹ năng, ngôn ngữ lập trình, bằng cấp..." required th:text="${job.requirements}"></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Quyền lợi & Đãi ngộ</label>
+                                <textarea name="benefits" rows="3" class="form-control" placeholder="Lương thưởng, bảo hiểm, đào tạo, du lịch..." th:text="${job.benefits}"></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <a th:href="@{/recruiter/jobs}" class="btn btn-secondary rounded-pill px-4">Hủy bỏ</a>
+                                <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">
+                                    <i class="bi bi-check2-circle me-1"></i>
+                                    <span th:text="${isNew} ? 'Đăng Tin Tuyển Dụng' : 'Lưu Thay Đổi'"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

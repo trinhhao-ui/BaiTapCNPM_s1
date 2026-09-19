@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header('Đăng Ký Tài Khoản')}"></head>
+<body class="bg-light">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-6">
+                <div class="card p-4 shadow-sm border-0">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-person-plus display-4 text-primary"></i>
+                        <h4 class="fw-bold mt-2">Đăng Ký Tài Khoản Mới</h4>
+                        <p class="text-muted small">Tham gia hệ thống tuyển dụng & tìm kiếm ứng viên</p>
+                    </div>
+
+                    <form th:action="@{/register}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Họ và tên <span class="text-danger">*</span></label>
+                            <input type="text" name="fullName" class="form-control" placeholder="Ví dụ: Nguyễn Văn A" required>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Tên đăng nhập <span class="text-danger">*</span></label>
+                                <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Mật khẩu <span class="text-danger">*</span></label>
+                                <input type="password" name="password" class="form-control" placeholder="Mật khẩu" required>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Email <span class="text-danger">*</span></label>
+                                <input type="email" name="email" class="form-control" placeholder="email@domain.com" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Số điện thoại</label>
+                                <input type="tel" name="phone" class="form-control" placeholder="0901234567">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Loại tài khoản (Vai trò) <span class="text-danger">*</span></label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="radio" class="btn-check" name="role" id="roleCandidate" value="ROLE_CANDIDATE" checked>
+                                    <label class="btn btn-outline-primary w-100 py-2" for="roleCandidate">
+                                        <i class="bi bi-person-fill d-block fs-5"></i>
+                                        Ứng Viên Tìm Việc
+                                    </label>
+                                </div>
+                                <div class="col-6">
+                                    <input type="radio" class="btn-check" name="role" id="roleRecruiter" value="ROLE_RECRUITER">
+                                    <label class="btn btn-outline-success w-100 py-2" for="roleRecruiter">
+                                        <i class="bi bi-building-fill d-block fs-5"></i>
+                                        Nhà Tuyển Dụng
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold">
+                            <i class="bi bi-check2-circle me-1"></i>Hoàn Tất Đăng Ký
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-3 small">
+                        Đã có tài khoản? <a th:href="@{/login}" class="fw-bold text-decoration-none">Đăng nhập tại đây</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

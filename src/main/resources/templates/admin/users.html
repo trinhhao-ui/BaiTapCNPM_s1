@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header('Quản Lý Người Dùng - Admin')}"></head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+    <main class="main-content py-4">
+        <div class="container">
+            <div class="card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1">
+                            <i class="bi bi-people-fill text-primary me-2"></i>Quản Lý Danh Sách Tài Khoản
+                        </h4>
+                        <p class="text-muted small mb-0">Quản trị toàn bộ tài khoản Ứng viên, Nhà tuyển dụng và Quản trị viên trong hệ thống</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Họ Và Tên</th>
+                                <th>Tên Đăng Nhập</th>
+                                <th>Email</th>
+                                <th>Số Điện Thoại</th>
+                                <th>Vai Trò (Role)</th>
+                                <th>Ngày Tạo</th>
+                                <th class="text-end">Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="u, iter : ${users}">
+                                <td th:text="${iter.count}">1</td>
+                                <td class="fw-bold" th:text="${u.fullName}">Nguyễn Văn A</td>
+                                <td><code th:text="${u.username}">username</code></td>
+                                <td th:text="${u.email}">email@domain.com</td>
+                                <td th:text="${u.phone != null ? u.phone : '---'}">0901234567</td>
+                                <td>
+                                    <span th:if="${u.role.name() == 'ROLE_ADMIN'}" class="badge bg-danger" th:text="${u.role.displayName}">Quản trị viên</span>
+                                    <span th:if="${u.role.name() == 'ROLE_RECRUITER'}" class="badge bg-warning text-dark" th:text="${u.role.displayName}">Nhà tuyển dụng</span>
+                                    <span th:if="${u.role.name() == 'ROLE_CANDIDATE'}" class="badge bg-info text-dark" th:text="${u.role.displayName}">Ứng viên</span>
+                                </td>
+                                <td><small class="text-muted" th:text="${#temporals.format(u.createdAt, 'dd/MM/yyyy')}">19/09/2026</small></td>
+                                <td class="text-end">
+                                    <form th:if="${currentUser.id != u.id}" th:action="@{'/admin/users/' + ${u.id} + '/delete'}" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa tài khoản">
+                                            <i class="bi bi-trash"></i> Xóa
+                                        </button>
+                                    </form>
+                                    <span th:if="${currentUser.id == u.id}" class="badge bg-secondary">Tài khoản hiện tại</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
